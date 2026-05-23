@@ -1,7 +1,0 @@
-# Voice Input Method - 语音输入法
-openai-whisper>=20231117
-pyaudio>=0.2.14
-numpy>=1.24.0
-pyperclip>=1.8.2
-webrtcvad>=2.0.10
-requests>=2.28.0
