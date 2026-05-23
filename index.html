@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎙️ 语音输入法 - Voice Input Method</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif; background: #0a0e27; color: #e0e0e0; overflow-x: hidden; }
+        
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at center, #1a237e22 0%, transparent 70%); }
+        .hero h1 { font-size: 3.5rem; background: linear-gradient(135deg, #64b5f6, #42a5f5, #1e88e5); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; animation: fadeInUp 1s ease; }
+        .hero .subtitle { font-size: 1.3rem; color: #90caf9; margin-bottom: 0.5rem; animation: fadeInUp 1s ease 0.2s both; }
+        .hero .badge { display: inline-block; background: #1b5e2033; color: #66bb6a; padding: 0.4rem 1.2rem; border-radius: 20px; font-size: 0.9rem; border: 1px solid #66bb6a44; margin-top: 0.5rem; animation: fadeInUp 1s ease 0.4s both; }
+        .hero .cta-group { margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; animation: fadeInUp 1s ease 0.6s both; }
+        .btn { padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 1rem; transition: all 0.3s; cursor: pointer; border: none; }
+        .btn-primary { background: linear-gradient(135deg, #1e88e5, #1565c0); color: white; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(30,136,229,0.4); }
+        .btn-secondary { background: transparent; color: #64b5f6; border: 2px solid #64b5f644; }
+        .btn-secondary:hover { background: #64b5f611; border-color: #64b5f6; }
+        
+        /* Demo Video Section */
+        .demo-section { padding: 4rem 2rem; text-align: center; }
+        .demo-section h2 { font-size: 2rem; color: #64b5f6; margin-bottom: 2rem; }
+        .video-container { max-width: 900px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: #111; box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative; }
+        .video-container video { width: 100%; display: block; }
+        .video-placeholder { padding: 4rem 2rem; color: #666; }
+        .video-placeholder .icon { font-size: 4rem; margin-bottom: 1rem; }
+        
+        /* Features */
+        .features { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .features h2 { font-size: 2rem; color: #64b5f6; text-align: center; margin-bottom: 3rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .feature-card { background: linear-gradient(135deg, #1a1f3a, #151929); border: 1px solid #2a3050; border-radius: 12px; padding: 2rem; transition: all 0.3s; }
+        .feature-card:hover { border-color: #1e88e5; transform: translateY(-4px); box-shadow: 0 12px 30px rgba(30,136,229,0.15); }
+        .feature-card .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+        .feature-card h3 { color: #e3f2fd; margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .feature-card p { color: #90a4ae; font-size: 0.95rem; line-height: 1.6; }
+        
+        /* Comparison */
+        .comparison { padding: 4rem 2rem; max-width: 1000px; margin: 0 auto; }
+        .comparison h2 { font-size: 2rem; color: #64b5f6; text-align: center; margin-bottom: 3rem; }
+        .compare-table { width: 100%; border-collapse: collapse; background: #1a1f3a; border-radius: 12px; overflow: hidden; }
+        .compare-table th { background: #1e88e5; color: white; padding: 1rem; font-size: 1rem; }
+        .compare-table td { padding: 0.9rem 1rem; text-align: center; border-bottom: 1px solid #2a3050; }
+        .compare-table tr:hover { background: #1e88e511; }
+        .local-badge { background: #1b5e2033; color: #66bb6a; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.85rem; }
+        .cloud-badge { background: #e6510022; color: #ffa726; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.85rem; }
+        
+        /* Architecture */
+        .architecture { padding: 4rem 2rem; max-width: 900px; margin: 0 auto; }
+        .architecture h2 { font-size: 2rem; color: #64b5f6; text-align: center; margin-bottom: 2rem; }
+        .arch-flow { display: flex; flex-direction: column; gap: 0; }
+        .arch-layer { background: linear-gradient(135deg, #1a1f3a, #151929); border: 1px solid #2a3050; border-radius: 12px; padding: 1.5rem 2rem; text-align: center; position: relative; }
+        .arch-layer h3 { color: #64b5f6; margin-bottom: 0.5rem; }
+        .arch-layer p { color: #90a4ae; font-size: 0.9rem; }
+        .arch-arrow { text-align: center; color: #1e88e5; font-size: 1.5rem; padding: 0.3rem 0; }
+        
+        /* Quick Start */
+        .quickstart { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }
+        .quickstart h2 { font-size: 2rem; color: #64b5f6; text-align: center; margin-bottom: 2rem; }
+        .code-block { background: #0d1117; border: 1px solid #2a3050; border-radius: 8px; padding: 1.5rem; overflow-x: auto; margin-bottom: 1.5rem; }
+        .code-block code { color: #79c0ff; font-family: 'Fira Code', monospace; font-size: 0.9rem; line-height: 1.8; }
+        .code-block .comment { color: #8b949e; }
+        .code-block .cmd { color: #ffa657; }
+        
+        /* Footer */
+        footer { padding: 3rem 2rem; text-align: center; border-top: 1px solid #2a3050; }
+        footer p { color: #546e7a; font-size: 0.9rem; }
+        footer a { color: #64b5f6; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+        
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.2rem; } .feature-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>🎙️ 语音输入法</h1>
+        <p class="subtitle">Whisper 本地识别 × 七牛云 ASR × VAD 智能断句</p>
+        <p class="subtitle" style="font-size: 1rem; color: #78909c;">基于 OpenAI Whisper 的智能语音输入法，支持本地离线与云端高精度双模式</p>
+        <span class="badge">七牛云 × XEngineer 实训营</span>
+        <div class="cta-group">
+            <a href="https://github.com/lilexi-bot/voice-input-method" class="btn btn-primary" target="_blank">⭐ GitHub 仓库</a>
+            <a href="#demo" class="btn btn-secondary">🎬 观看 Demo</a>
+        </div>
+    </section>
+
+    <!-- Demo Video -->
+    <section class="demo-section" id="demo">
+        <h2>🎬 Demo 演示视频</h2>
+        <div class="video-container">
+            <video controls poster="" id="demoVideo">
+                <source src="demo.mp4" type="video/mp4">
+                您的浏览器不支持视频播放
+            </video>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2>✨ 核心特性</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="icon">🔇</div>
+                <h3>本地离线识别</h3>
+                <p>Whisper 本地运行，零成本、无需联网、隐私完全保护，适合敏感场景使用</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⚡</div>
+                <h3>VAD 智能断句</h3>
+                <p>WebRTC 静音检测，自动识别说话起止，无需手动操作，体验流畅自然</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">📝</div>
+                <h3>长语音支持</h3>
+                <p>自动分块处理，突破 30 秒限制，支持长时间连续语音输入</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">☁️</div>
+                <h3>云端高精度</h3>
+                <p>一键切换七牛云 ASR，识别精度提升至 ~97%，适合追求极致准确率的场景</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">💰</div>
+                <h3>成本可控</h3>
+                <p>本地零成本 vs 云端 ¥0.005/10秒，日常使用本地模式，重要场景切换云端</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">⌨️</div>
+                <h3>快捷键支持</h3>
+                <p>空格键录音、Ctrl+M 切换模式、Ctrl+Enter 强制识别、Esc 取消，高效操作</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison -->
+    <section class="comparison">
+        <h2>📊 性能与成本对比</h2>
+        <table class="compare-table">
+            <thead>
+                <tr>
+                    <th>指标</th>
+                    <th>💻 本地 Whisper</th>
+                    <th>☁️ 七牛云 ASR</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>准确率</td><td>~92%</td><td>~97%</td></tr>
+                <tr><td>延迟</td><td>&lt; 2s (5秒音频)</td><td>&lt; 0.5s</td></tr>
+                <tr><td>网络要求</td><td><span class="local-badge">❌ 无需联网</span></td><td><span class="cloud-badge">✅ 需要联网</span></td></tr>
+                <tr><td>隐私</td><td><span class="local-badge">✅ 完全本地</span></td><td><span class="cloud-badge">⚠️ 音频上传</span></td></tr>
+                <tr><td>单次成本</td><td><span class="local-badge">¥0</span></td><td><span class="cloud-badge">¥0.005/10秒</span></td></tr>
+                <tr><td>100次使用</td><td><span class="local-badge">¥0</span></td><td><span class="cloud-badge">¥0.5</span></td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Architecture -->
+    <section class="architecture">
+        <h2>🏗️ 技术架构</h2>
+        <div class="arch-flow">
+            <div class="arch-layer">
+                <h3>🖥️ UI 层 (Tkinter)</h3>
+                <p>录音按钮 · 模式切换 · 结果显示 · 快捷键支持</p>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer">
+                <h3>🔀 模式选择层</h3>
+                <p>☁️ 七牛云 ASR（高精度·计费） ⟷ 💻 本地 Whisper（零成本·离线）</p>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer">
+                <h3>🎤 语音处理层</h3>
+                <p>PyAudio 录音 → WebRTC VAD → 静音检测 → 短语音直接识别 / 长语音分块拼接</p>
+            </div>
+            <div class="arch-arrow">▼</div>
+            <div class="arch-layer">
+                <h3>✏️ 文本处理层</h3>
+                <p>标点恢复 · 格式规范化 · 谐音纠错</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section class="quickstart">
+        <h2>🚀 快速开始</h2>
+        <div class="code-block">
+            <code>
+<span class="comment"># 克隆仓库</span>
+<span class="cmd">git clone</span> https://github.com/lilexi-bot/voice-input-method.git
+<span class="cmd">cd</span> voice-input-method
+
+<span class="comment"># 安装依赖</span>
+<span class="cmd">pip install</span> -r requirements.txt
+
+<span class="comment"># 运行</span>
+<span class="cmd">python</span> main.py
+
+<span class="comment"># Demo 演示模式（需要 sample.wav）</span>
+<span class="cmd">python</span> main.py --demo
+            </code>
+        </div>
+        <p style="text-align:center; color:#78909c;">首次运行会自动下载 Whisper 模型（约 140MB）</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>🎙️ Voice Input Method · <a href="https://github.com/lilexi-bot/voice-input-method">GitHub</a> · MIT License</p>
+        <p style="margin-top: 0.5rem;">七牛云 × XEngineer 实训营作品</p>
+    </footer>
+</body>
+</html>
